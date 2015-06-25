@@ -13,13 +13,25 @@ Scripts should be considered "research quality" and are being provided for repro
 STAR --runThreadN 4 --runMode genomeGenerate --genomeDir STAR_index_mouse --genomeFastaFiles Mus_musculus.GRCm38.dna.primary_assembly.fa
 ```
 3. An example of the STAR command line for alignment is:
-	
-	STAR --runThreadN 4 --genomeDir STAR_index_mouse --readFilesIn SRR1528720_1.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 50 --alignSJoverhangMin 1 --outFilterMismatchNmax 2 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix SRR1528720_1.STAR --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif
-
+```	
+STAR --runThreadN 4 --genomeDir STAR_index_mouse --readFilesIn SRR1528720_1.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 50 --alignSJoverhangMin 1 --outFilterMismatchNmax 2 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix SRR1528720_1.STAR --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif
+```
 4. BAM files were sorted by name and indexed using samtools
 
 5. Read counts against a known annotation (Ensembl file Mus_musculus.GRCm38.79.gtf) were calculated using htseq-count from HTSeq version 0.6.1.  An example command is:
+```
+samtools view SRR1528735_1.STARAligned.sortedByName.bam | htseq-count -r name -o SRR1528735_1.STARAligned.sortedByName.sam -s no -t exon -m union -i gene_id - Mus_musculus.GRCm38.79.gtf > SRR1528735_1.STARAligned.sortedByName.htseq.u.txt
+```
+6. The above command produces two major outputs for each dataset
+..1. A (large) SAM file detailing all read alignments and how htseq-count has categorised the read
+..2. A text file containing the counts per transcript (from the GTF)
 
-	samtools view SRR1528735_1.STARAligned.sortedByName.bam | htseq-count -r name -o SRR1528735_1.STARAligned.sortedByName.sam -s no -t exon -m union -i gene_id - Mus_musculus.GRCm38.79.gtf > SRR1528735_1.STARAligned.sortedByName.htseq.u.txt
+7. The htseq-count results are available from: http://www.ark-genomics.org/tmp/Mouse_Lung_Cancer_counts.txt
 
-6. 
+8. We created an exon bed file using script gtf2bed.pl
+```
+perl gtf2bed.pl Mus_musculus.GRCm38.79.gtf > Mus_musculus.GRCm38.79.exon.bed
+```
+and the BED file is available from http://www.ark-genomics.org/tmp/Mus_musculus.GRCm38.79.exon.bed
+
+9. 
