@@ -9,9 +9,9 @@ Scripts should be considered "research quality" and are being provided for repro
 1. Download data from SRA accessions in file SRR_Acc_List.txt
 
 2. Alignment to the mouse genome used STAR 2.4.0i and the Mus_musculus.GRCm38.dna.primary_assembly.fa file available from Ensembl.  STAR index built using:
-
-	STAR --runThreadN 4 --runMode genomeGenerate --genomeDir STAR_index_mouse --genomeFastaFiles Mus_musculus.GRCm38.dna.primary_assembly.fa
-
+```
+STAR --runThreadN 4 --runMode genomeGenerate --genomeDir STAR_index_mouse --genomeFastaFiles Mus_musculus.GRCm38.dna.primary_assembly.fa
+```
 3. An example of the STAR command line for alignment is:
 	
 	STAR --runThreadN 4 --genomeDir STAR_index_mouse --readFilesIn SRR1528720_1.fastq.gz --readFilesCommand zcat --outFilterType BySJout --outFilterMultimapNmax 50 --alignSJoverhangMin 1 --outFilterMismatchNmax 2 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outFileNamePrefix SRR1528720_1.STAR --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif
