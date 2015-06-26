@@ -26,12 +26,21 @@ samtools view SRR1528735_1.STARAligned.sortedByName.bam | htseq-count -r name -o
   * A (large) SAM file detailing all read alignments and how htseq-count has categorised the read
   * A text file containing the counts per transcript (from the GTF)
 
-* 7 The htseq-count results are available from: http://www.ark-genomics.org/tmp/Mouse_Lung_Cancer_counts.txt
+* 7 A matrix of the htseq-count results are available from: http://www.ark-genomics.org/tmp/Mouse_Lung_Cancer_counts.txt
 
-* 8 We created an exon bed file using script gtf2bed.pl
+* 8 We created an exon bed file using script gtf2bed.pl and the BED file is available from [http://www.ark-genomics.org/tmp/Mus_musculus.GRCm38.79.exon.bed]
 ```
 perl gtf2bed.pl Mus_musculus.GRCm38.79.gtf > Mus_musculus.GRCm38.79.exon.bed
 ```
-and the BED file is available from http://www.ark-genomics.org/tmp/Mus_musculus.GRCm38.79.exon.bed
 
-* 9
+* 9 If the genome file is not already indexed, then index it using samtools
+```
+samtools faidx Mus_musculus.GRCm38.dna.primary_assembly.fa
+```
+
+* 10 We create counts of MMG (multi-map groups) per sample using script count_from_bed.pl
+```
+perl count_from_bed.pl SRR1528735_1.STARAligned.sortedByName.sam Mus_musculus.GRCm38.79.exon.bed Mus_musculus.GRCm38.dna.primary_assembly.fa > SRR1528735_1.STARAligned.sortedByName.sam.cts
+```
+
+* 11 
