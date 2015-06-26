@@ -28,7 +28,7 @@ samtools view SRR1528735_1.STARAligned.sortedByName.bam | htseq-count -r name -o
 
 * 7 A matrix of the htseq-count results are available from: http://www.ark-genomics.org/tmp/Mouse_Lung_Cancer_counts.txt
 
-* 8 We created an exon bed file using script gtf2bed.pl and the BED file is available from [http://www.ark-genomics.org/tmp/Mus_musculus.GRCm38.79.exon.bed]
+* 8 We created an exon bed file using script gtf2bed.pl and the BED file is available from http://www.ark-genomics.org/tmp/Mus_musculus.GRCm38.79.exon.bed.  Note that this script specifically created feature names of the format exon_id.gene_id which are used further downstream in the analysis.
 ```
 perl gtf2bed.pl Mus_musculus.GRCm38.79.gtf > Mus_musculus.GRCm38.79.exon.bed
 ```
@@ -38,9 +38,17 @@ perl gtf2bed.pl Mus_musculus.GRCm38.79.gtf > Mus_musculus.GRCm38.79.exon.bed
 samtools faidx Mus_musculus.GRCm38.dna.primary_assembly.fa
 ```
 
-* 10 We create counts of MMG (multi-map groups) per sample using script count_from_bed.pl
+* 10 We create counts of MMG (multi-map groups) per sample using script count_from_bed.pl.  (Note this script expects feature names of the format exon_id.gene_id, and also expects you to have assigned reads to Ensembl IDs.  Specifically, the script expects uniquely mapped reads to have a SAM flag beginning XF:Z:ENS)
 ```
 perl count_from_bed.pl SRR1528735_1.STARAligned.sortedByName.sam Mus_musculus.GRCm38.79.exon.bed Mus_musculus.GRCm38.dna.primary_assembly.fa > SRR1528735_1.STARAligned.sortedByName.sam.cts
 ```
 
-* 11 
+* 11 We then collate all of the MMG counts across all samples using script collect_group_counts.pl.  The command below applies filters: an MMG must have a count greater than 100 in more than 50% of the .cts files to make it into the final results 
+```
+perl collect_group_counts.pl 100 0.5 *.gene.cts > groupcounts.txt
+``` 
+
+* 12 We then merge groups such that any group completely contained within a larger group is merged
+```
+perl collapse_groups.pl groupcounts.txt > mergedgroups.txt
+```
