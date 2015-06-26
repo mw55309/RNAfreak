@@ -52,3 +52,5 @@ perl collect_group_counts.pl 100 0.5 *.gene.cts > groupcounts.txt
 ```
 perl collapse_groups.pl groupcounts.txt > mergedgroups.txt
 ```
+
+The merged group counts are available from http://www.ark-genomics.org/tmp/mergedcounts.txt
