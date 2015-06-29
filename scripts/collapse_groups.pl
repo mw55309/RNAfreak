@@ -11,10 +11,10 @@
 
 use strict;
 
-# we should have one argument, a text matrix
+# we should have at least one argument, a text matrix
 # of group counts
-unless (@ARGV==1) {
-	warn "Usage: perl collapse_groups.pl <group counts file>\n";
+unless (@ARGV>0) {
+	warn "Usage: perl collapse_groups.pl <group counts file> <min group size>\n";
 	exit;
 }
 
@@ -26,6 +26,12 @@ while(<IN>) {
 	chomp();
 	@titles = split(/\t/, $_);
 	last;
+}
+
+# get the min group size
+my $mingroupsize = shift;
+unless (defined $mingroupsize) {
+	$mingroupsize = 0;
 }
 
 # $g will store the counts, indexed by
@@ -136,6 +142,15 @@ sub can_merge {
 		foreach my $element (split(/,/, $g1)) {
 			$h2{$element}++;
 		}
+	}
+
+	# don't merge if lower than the min size
+	if (scalar(keys %h1) < $mingroupsize) {
+		return 0;
+	}
+
+	if (scalar(keys %h2) < $mingroupsize) {
+		return 0;
 	}
 
 	# go through the biggest group

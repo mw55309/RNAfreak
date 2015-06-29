@@ -48,9 +48,9 @@ perl count_from_bed.pl SRR1528735_1.STARAligned.sortedByName.sam Mus_musculus.GR
 perl collect_group_counts.pl 100 0.5 *.gene.cts > groupcounts.txt
 ``` 
 
-* 12 We then merge groups such that any group completely contained within a larger group is merged
+* 12 We then merge large groups (n >= 5) such that any group completely contained within a larger group is merged
 ```
-perl collapse_groups.pl groupcounts.txt > mergedgroups.txt
+perl collapse_groups.pl groupcounts.txt 5 > mergedgroups.txt
 ```
 
 The merged group counts are available from http://www.ark-genomics.org/tmp/mergedgroups.txt
