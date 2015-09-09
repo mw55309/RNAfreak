@@ -16,8 +16,9 @@
 use strict;
 use POSIX;
 
-my $samtools = "/mnt/ris-fas1a/ark1/software/samtools-0.1.18/samtools";
-my $bedtools = "/mnt/ris-fas1a/ark1/software/BEDTools-Version-2.16.2/bin/intersectBed";
+# if not in your $PATH, edit the variables below
+my $samtools = "samtools";
+my $bedtools = "intersectBed";
 
 # we should have two arguments, a SAM file 
 # and a BED file
